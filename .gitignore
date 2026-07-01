@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor backups
+*.bak
+*~
+*.swp
+
+# Claude Code working directory for this project — do not publish
+.claude/
+
+# Internal instructions for Claude Code (contain private paths/names) — do not publish
+CLAUDE.md
+
+# Internal project notes and decisions — source-side, not part of the public showcase
+docs/
+
+# Secrets and local environment — do not publish
+.env
+.env.*
+*.local
+
+# Claude Code state and private data — in case anything from ~/.claude gets copied here
+history.jsonl
+projects/
+sessions/
+security/
+telemetry/
+usage-data/
+daemon.log

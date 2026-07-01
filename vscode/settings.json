@@ -1,0 +1,72 @@
+{
+    "editor.accessibilitySupport": "off",
+    "terminal.integrated.initialHint": false,
+    "workbench.colorTheme": "Dark Modern",
+    "explorer.fileNesting.patterns": {
+        "*.ts": "${capture}.js",
+        "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+        "*.jsx": "${capture}.js",
+        "*.tsx": "${capture}.ts",
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+        "*.sqlite": "${capture}.${extname}-*",
+        "*.db": "${capture}.${extname}-*",
+        "*.sqlite3": "${capture}.${extname}-*",
+        "*.db3": "${capture}.${extname}-*",
+        "*.sdb": "${capture}.${extname}-*",
+        "*.s3db": "${capture}.${extname}-*"
+    },
+
+    "terminal.integrated.profiles.osx": {
+      "Session 1": { "path": "zsh", "color": "terminal.ansiBlue", "icon": "terminal" },
+      "Session 2": { "path": "zsh", "color": "terminal.ansiGreen", "icon": "terminal-tmux" },
+      "Session 3": { "path": "zsh", "color": "terminal.ansiMagenta", "icon": "terminal-bash" }
+    },
+
+    "terminal.integrated.defaultProfile.osx": "Session 1",
+
+    "extensions.ignoreRecommendations": true,
+    "terminal.integrated.mouseWheelScrollSensitivity": 3,
+
+    "terminal.integrated.enablePersistentSessions": true,
+    "terminal.integrated.persistentSessionReviveProcess": "never",
+    "terminal.integrated.persistentSessionReviveProcessDelay": 5000,
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.shellIntegration.decorationsEnabled": "both",
+    "terminal.integrated.stickyScroll.enabled": true,
+    "terminal.integrated.persistentSessionScrollback": 2000,
+    "terminal.integrated.confirmOnExit": "hasChildProcesses",
+    "terminal.integrated.splitCwd": "workspaceRoot",
+    "terminal.integrated.tabs.enabled": true,
+    "terminal.integrated.environmentChangesRelaunch": false,
+    "terminal.integrated.environmentChangesIndicator": "off",
+    "terminal.integrated.tabs.hideCondition": "never",
+    "workbench.editor.restoreViewState": true,
+    "workbench.startupEditor": "none",
+
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.fontFamily": "MesloLGS Nerd Font, Menlo, monospace",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.cursorStyle": "line",
+
+    // --- Claude Code TUI: keep its native palette (diffs, highlighting) ---
+    "terminal.integrated.minimumContrastRatio": 1,
+
+    // --- Audible bell when Claude Code finishes a response ---
+    "accessibility.signals.terminalBell": { "sound": "on" },
+
+    // --- Performance for long outputs ---
+    "terminal.integrated.gpuAcceleration": "auto",
+    "terminal.integrated.scrollback": 10000,
+
+    // --- Informative tabs for parallel sessions ---
+    "terminal.integrated.tabs.title": "${process}${separator}${cwdFolder}",
+    "terminal.integrated.tabs.description": "${cwdFolder}",
+
+    // --- Safer with direct file edits from Claude (optional) ---
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+
+    "extensions.autoUpdate": "on",
+    "extensions.autoCheckUpdates": false
+}
