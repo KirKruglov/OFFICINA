@@ -8,6 +8,11 @@
 *~
 *.swp
 
+# Python build/test artifacts (CLI tools)
+__pycache__/
+*.pyc
+.pytest_cache/
+
 # Claude Code working directory for this project — do not publish
 .claude/
 
