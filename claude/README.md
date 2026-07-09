@@ -4,9 +4,6 @@ The core of OFFICINA: a deliberately selected set of Claude Code artifacts — *
 modes and procedures), **subagents**, and sanitized **settings** — chosen on purpose rather than
 mirrored wholesale. Part of the [OFFICINA](../) repository.
 
-Artifacts are exported from a private source of truth: copy + sanitization (no absolute paths, no
-secrets, no private Claude state) on each one. See the repo [README](../README.md) for the model.
-
 ## Layout
 
 | Folder | What it holds | Status |

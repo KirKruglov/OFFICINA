@@ -1,4 +1,4 @@
-# Settings — sanitized global Claude Code configuration
+# Settings — global Claude Code configuration
 
 The global layer of my [Claude Code](https://claude.com/claude-code) setup: personal preferences,
 permissions, a custom status line, and two `CLAUDE.md` examples. Part of the
