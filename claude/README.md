@@ -13,7 +13,7 @@ secrets, no private Claude state) on each one. See the repo [README](../README.m
 |--------|---------------|--------|
 | [`skills/`](skills/) | Skills — reusable modes and procedures invoked in a session | 🚧 Growing |
 | [`agents/`](agents/) | Subagents — specialized agents for delegated tasks | 🚧 Pending |
-| [`settings/`](settings/) | Sanitized global `CLAUDE.md` and `settings.json` | 🚧 Pending |
+| [`settings/`](settings/) | Sanitized global config — `CLAUDE.md` examples, `settings.json`, status line | 🚧 Growing |
 
 ## Skills
 
@@ -29,6 +29,18 @@ to produce the single commit — one message convention, one safety scan, no dup
 Each skill lives in its own folder as a `SKILL.md` with YAML frontmatter (`name`, `description`,
 and — for manual-only skills — `disable-model-invocation: true`). Drop the folder into
 `~/.claude/skills/` (or a project's `.claude/skills/`) to use it.
+
+## Settings
+
+The global configuration layer — see [`settings/README.md`](settings/README.md) for per-file notes.
+
+| File | Layer | What it is |
+|------|-------|------------|
+| [`CLAUDE.global.md`](settings/CLAUDE.global.md) | Global | Cross-project preferences loaded in every session |
+| [`CLAUDE.project.md`](settings/CLAUDE.project.md) | Project | Reusable template for a project's root `CLAUDE.md` |
+| [`settings.json`](settings/settings.json) | Global | Permissions, status line, plugins, effort level |
+| [`settings.local.json`](settings/settings.local.json) | Project-local | Example of machine-/repo-local overrides |
+| [`statusline-command.sh`](settings/statusline-command.sh) | Global | Custom status line (model, context, rate limits, branch) |
 
 ---
 

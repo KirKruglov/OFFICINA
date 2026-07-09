@@ -1,0 +1,23 @@
+{
+  "cleanupPeriodDays": 60,
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(echo \"EXIT_CODE:$?\")",
+      "Bash(echo \"EXIT:$?\")"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Bash(cat .env*)",
+      "Bash(echo * > .env*)"
+    ],
+    "defaultMode": "auto"
+  },
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": false
+  },
+  "autoCompactEnabled": true
+}
