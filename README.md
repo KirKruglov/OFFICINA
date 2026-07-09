@@ -41,7 +41,7 @@ your tooling. Configuration lives here too, but it orbits the method — not the
 
 | Section | What it holds | Status |
 |---|---|---|
-| [`claude/`](claude/) | Core: skills, subagents, Claude Code settings | 🚧 In progress |
+| [`claude/`](claude/) | Core: skills, subagents, Claude Code settings | 🚧 Growing |
 | [`methodology/`](methodology/) | Rules and guides — *how to work* (the main differentiator) | 🚧 In progress |
 | [`cli/`](cli/) | Personal CLI tools and shared libraries | 🚧 In progress |
 | [`vscode/`](vscode/) | VS Code settings, keybindings, curated extensions | ✅ Ready |

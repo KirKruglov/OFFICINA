@@ -1,7 +1,7 @@
 # Claude Code — curated skills, subagents, and settings
 
 The core of OFFICINA: a deliberately selected set of Claude Code artifacts — **skills** (reusable
-modes and procedures), **subagents**, and sanitized **settings** — chosen on purpose rather than
+modes and procedures), **subagents**, and **settings** — chosen on purpose rather than
 mirrored wholesale. Part of the [OFFICINA](../) repository.
 
 ## Layout
@@ -9,7 +9,7 @@ mirrored wholesale. Part of the [OFFICINA](../) repository.
 | Folder | What it holds | Status |
 |--------|---------------|--------|
 | [`skills/`](skills/) | Skills — reusable modes and procedures invoked in a session | 🚧 Growing |
-| [`agents/`](agents/) | Subagents — specialized agents for delegated tasks | 🚧 Pending |
+| [`agents/`](agents/) | Subagents — specialized agents for delegated tasks | 🚧 Growing |
 | [`settings/`](settings/) | Sanitized global config — `CLAUDE.md` examples, `settings.json`, status line | 🚧 Growing |
 
 ## Skills
@@ -26,6 +26,18 @@ to produce the single commit — one message convention, one safety scan, no dup
 Each skill lives in its own folder as a `SKILL.md` with YAML frontmatter (`name`, `description`,
 and — for manual-only skills — `disable-model-invocation: true`). Drop the folder into
 `~/.claude/skills/` (or a project's `.claude/skills/`) to use it.
+
+## Agents
+
+Specialized subagents you delegate a scoped task to — see [`agents/README.md`](agents/README.md) for
+per-agent notes.
+
+| Agent | Model | What it does |
+|-------|-------|--------------|
+| [`ai-dev`](agents/ai-dev.md) | `opus` | Agentic-systems architect: designs, builds, and ships production AI agents across the full stack — orchestration, tools, RAG, memory, inference, runtime, evals/observability, governance — with cost, latency, and security treated as first-class. Blunt, trade-off-driven, evals-before-deploy. |
+
+Each agent is a single Markdown file with YAML frontmatter (`name`, `description`, `model`). Drop it
+into `~/.claude/agents/` (or a project's `.claude/agents/`) to make it available.
 
 ## Settings
 
