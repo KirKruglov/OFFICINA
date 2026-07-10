@@ -10,15 +10,19 @@ It runs in Claude Code and any harness that reads the `SKILL.md` format. Part of
 | [`committing-changes`](committing-changes/SKILL.md) | auto — before any commit | Conventional Commits procedure: reads project/global conventions (`CLAUDE.md` or `AGENTS.md`), scans staged files for secrets and garbage, proposes atomic splits, drafts a `type(scope): subject` message, and waits for approval before committing. Never pushes or amends unasked. |
 | [`discuss`](discuss/SKILL.md) | `/discuss` (manual only) | Persistent, read-only thinking-partner mode for Q&A, ideation, analysis, and design debate — concise, one question at a time, argues its own view, proposes 3+ alternatives, writes no files until you exit. |
 | [`merging-branches`](merging-branches/SKILL.md) | auto — before merge/rebase | Safe branch integration: determines strategy from the project conventions file (`CLAUDE.md` or `AGENTS.md`), runs pre-merge checks (clean tree, up-to-date with remote, version-aware conflict pre-scan), and requires a typed phrase to touch protected branches. Never pushes or deletes branches unasked. |
+| [`release-finalize`](release-finalize/SKILL.md) | `/release-finalize [version]` (manual only) | Finalizes a product release: prepends a Keep a Changelog section, syncs the root README, runs a pre-publish scan (secrets, version consistency, clean tree), and creates an annotated git tag. Auto-detects artifacts; optional `.release-finalize.yml` overrides. Never merges, pushes, or deploys — only prints the next commands. |
 
-The two git skills chain: on a squash merge, `merging-branches` hands off to `committing-changes`
+The git skills chain: on a squash merge, `merging-branches` hands off to `committing-changes`
 to produce the single commit — one message convention, one safety scan, no duplication.
+`release-finalize` reuses the same set: it delegates its commit phase to `committing-changes`, then
+points to `merging-branches` for the release-branch merge in its hand-off.
 
 ## Using a skill
 
 Each skill lives in its own folder as a `SKILL.md` with YAML frontmatter (`name`, `description`,
-and — for manual-only skills — `disable-model-invocation: true`). Drop the folder into your agent's
-skills directory to make it available:
+and — for manual-only skills — `disable-model-invocation: true`; optionally `argument-hint` and
+`allowed-tools` for command-style skills). Drop the folder into your agent's skills directory to
+make it available:
 
 - **Claude Code** — `~/.claude/skills/<name>/` (global) or a project's `.claude/skills/<name>/`.
 - **Other harnesses** — the equivalent skills location for your runtime; the `SKILL.md` content is
@@ -26,5 +30,5 @@ skills directory to make it available:
 
 ---
 
-**Keywords:** agent skills, SKILL.md, reusable skills, discussion mode, git, conventional commits, merge, AI coding workflow.
+**Keywords:** agent skills, SKILL.md, reusable skills, discussion mode, git, conventional commits, merge, release, changelog, semver, git tag, AI coding workflow.
 **Topics:** `agent-skills` · `claude-code-skills` · `developer-tools`

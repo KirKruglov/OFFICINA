@@ -1,0 +1,19 @@
+# .release-finalize.yml — place at the root of the target repository.
+# Every field is optional: without this file the skill runs off auto-detection.
+# Defaults are shown here — override only what differs.
+
+changelog: CHANGELOG.md            # default: auto-find CHANGELOG.md, then HISTORY.md
+readme: README.md                  # default: root README.md
+
+# Files that hold the product version (for the consistency check).
+# Default: auto-detect among pyproject.toml / package.json / VERSION / Cargo.toml.
+version_files:
+  - pyproject.toml
+
+branch_pattern: 'release/*'        # default: current branch, no hard check
+
+public_prep:
+  secret_scan: true                # scan for secrets before publishing
+  exclude:                         # extra paths to scan for private/stray content
+    - .env
+    - internal/

@@ -1,0 +1,5 @@
+## v{VERSION} — {DATE}
+
+{NARRATIVE}
+
+{CHANGES_LIST}
