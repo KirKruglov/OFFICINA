@@ -30,8 +30,9 @@ your tooling. Configuration lives here too, but it orbits the method — not the
 
 - **Method first.** Reusable rules and guides — writing style, CLI authoring, skill & subagent
   authoring, loop engineering — kept readable on their own.
-- **Claude Code at the core.** Curated skills, subagents, and settings, selected on purpose rather
-  than mirrored wholesale.
+- **Portable skills, Claude Code core.** Curated skills that run in Claude Code and compatible
+  harnesses, plus Claude-specific subagents and settings — selected on purpose rather than mirrored
+  wholesale.
 - **Environment around it.** VS Code and shell as applied sections that support the core, not the
   headline.
 - **macOS, one command.** Portable setup: bring a fresh machine up to the same environment with a
@@ -41,7 +42,8 @@ your tooling. Configuration lives here too, but it orbits the method — not the
 
 | Section | What it holds | Status |
 |---|---|---|
-| [`claude/`](claude/) | Core: skills, subagents, Claude Code settings | 🚧 Growing |
+| [`skills/`](skills/) | Portable skills — reusable modes and procedures (Claude Code & compatible harnesses) | 🚧 Growing |
+| [`claude/`](claude/) | Claude Code layer — subagents and settings | 🚧 Growing |
 | [`methodology/`](methodology/) | Rules and guides — *how to work* (the main differentiator) | 🚧 In progress |
 | [`cli/`](cli/) | Personal CLI tools and shared libraries | 🚧 In progress |
 | [`vscode/`](vscode/) | VS Code settings, keybindings, curated extensions | ✅ Ready |

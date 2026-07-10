@@ -7,7 +7,7 @@ own folder with its entry script, tests, and a README. Part of the [OFFICINA](..
 
 | Tool | Command | What it does |
 |------|---------|--------------|
-| [`auto-commit`](auto-commit/) | `auto-commit [--dry-run] [-y]` | Deterministic quick commit for small edits (1–3 files, one directory). Builds a mechanical `scope: verb files` message from git status, scans added lines for secrets, and refuses anything wider — redirecting to the [`committing-changes`](../claude/skills/committing-changes/SKILL.md) skill. Never stages until checks pass, never pushes. See [its README](auto-commit/README.md). |
+| [`auto-commit`](auto-commit/) | `auto-commit [--dry-run] [-y]` | Deterministic quick commit for small edits (1–3 files, one directory). Builds a mechanical `scope: verb files` message from git status, scans added lines for secrets, and refuses anything wider — redirecting to the [`committing-changes`](../skills/committing-changes/SKILL.md) skill. Never stages until checks pass, never pushes. See [its README](auto-commit/README.md). |
 
 ## Delivery
 

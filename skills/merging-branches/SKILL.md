@@ -1,6 +1,6 @@
 ---
 name: merging-branches
-description: Use BEFORE any git merge, rebase, or branch integration. Reads project CLAUDE.md to determine merge strategy, runs pre-merge safety checks (diff name-status both sides, clean working tree, up-to-date with remote, conflict scan), requires explicit user confirmation for merge to main/master/release branches. Trigger phrases — "merge X into Y", "rebase onto", or any request implying branch integration.
+description: Use BEFORE any git merge, rebase, or branch integration. Reads the project conventions file (CLAUDE.md or AGENTS.md) to determine merge strategy, runs pre-merge safety checks (diff name-status both sides, clean working tree, up-to-date with remote, conflict scan), requires explicit user confirmation for merge to main/master/release branches. Trigger phrases — "merge X into Y", "rebase onto", or any request implying branch integration.
 ---
 
 # Merging Branches
@@ -10,24 +10,24 @@ When invoked, follow this procedure step by step. Create a TodoWrite task per st
 ## Rule Hierarchy
 
 1. Explicit user instruction in the current message — wins.
-2. Project `CLAUDE.md` — sections `## Git workflow`, `## Branching`, `## Release process`.
-3. Global `~/.claude/CLAUDE.md`.
+2. Project conventions file — `CLAUDE.md` or `AGENTS.md` — sections `## Git workflow`, `## Branching`, `## Release process`.
+3. Global conventions — `~/.claude/CLAUDE.md` (or your harness's global agents file, e.g. `~/.codex/AGENTS.md`).
 4. This SKILL.md.
 
 ## Step 1: Read conventions and determine strategy
 
-- Read project `CLAUDE.md`. Look for sections: `## Git workflow`, `## Branching`, `## Release process`.
-- Read `~/.claude/CLAUDE.md` as fallback.
+- Read the project conventions file — `CLAUDE.md` or `AGENTS.md`. Look for sections: `## Git workflow`, `## Branching`, `## Release process`.
+- Read the global conventions file — `~/.claude/CLAUDE.md` (or the equivalent for your harness) — as fallback.
 - If you find merge-strategy guidance, surface the relevant quote to the user and ask to confirm interpretation:
 
 ```
-From project CLAUDE.md:
+From project conventions file:
 > On release push — squash-merge the branch's commits.
 
 Interpreted strategy: squash. Confirm? (y/n/other)
 ```
 
-If strategy is NOT described in any CLAUDE.md — ask user directly: squash / merge commit / rebase / ff-only.
+If strategy is NOT described in any conventions file — ask user directly: squash / merge commit / rebase / ff-only.
 
 ## Step 2: Identify source and target
 
@@ -146,7 +146,7 @@ git --version
 Merge plan:
   source: <branch> (<N commits>)
   target: <branch> (protected: true/false)
-  strategy: <squash|merge|rebase|ff-only> (source: CLAUDE.md | user)
+  strategy: <squash|merge|rebase|ff-only> (source: conventions | user)
 
   Files changed: <N>
   Overlaps with target: <N>
@@ -200,7 +200,7 @@ If Claude is tempted to use any of these — STOP, report to user, wait for expl
 
 | Phrase | Effect |
 |---|---|
-| "force squash/merge/rebase" | Set strategy manually, skip CLAUDE.md read |
+| "force squash/merge/rebase" | Set strategy manually, skip conventions read |
 | "skip checks" | Skip 4b (remote sync) and 4d (conflict pre-scan) only. 4a (clean working tree) and 4c (diff display) always run. |
 | "force" | Does NOT enable `--force` push. Force-push still requires "yes force push to <branch>" |
 

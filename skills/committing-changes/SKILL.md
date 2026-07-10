@@ -12,14 +12,14 @@ When invoked, follow this procedure step by step. Create a TodoWrite task for ea
 Apply rules in this priority order (highest first):
 
 1. Explicit user instruction in the current message — always wins.
-2. Project `CLAUDE.md` — sections `## Git workflow`, `## Git conventions`, `## Commit rules`.
-3. Global `~/.claude/CLAUDE.md`.
+2. Project conventions file — `CLAUDE.md` or `AGENTS.md` — sections `## Git workflow`, `## Git conventions`, `## Commit rules`.
+3. Global conventions — `~/.claude/CLAUDE.md` (or your harness's global agents file, e.g. `~/.codex/AGENTS.md`).
 4. This SKILL.md — process defaults.
 
 ## Step 1: Read conventions
 
-- Read project `CLAUDE.md` if it exists. Look for sections: `## Git workflow`, `## Git conventions`, `## Commit rules`.
-- Read `~/.claude/CLAUDE.md`.
+- Read the project conventions file if it exists — `CLAUDE.md` or `AGENTS.md`. Look for sections: `## Git workflow`, `## Git conventions`, `## Commit rules`.
+- Read the global conventions file — `~/.claude/CLAUDE.md` (or the equivalent for your harness).
 - Project rules override global rules.
 
 ## Step 2: Gather state (parallel)

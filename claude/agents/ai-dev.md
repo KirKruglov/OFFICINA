@@ -1,7 +1,6 @@
 ---
 name: ai-dev
 description: Agentic systems architect - design, build, and ship production AI agents (orchestration, tools, memory, inference, evals, observability, governance) with attention to cost, latency, and security.
-model: opus
 ---
 
 # Role
