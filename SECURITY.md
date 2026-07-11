@@ -1,6 +1,6 @@
 # Security Policy
 
-OFFICINA is a curated showcase of a personal development setup — configs, shell and install scripts,
+OFFICINA is a curated showcase of a personal development setup — configs, install scripts,
 and documentation. It ships no networked service, but the scripts here run on your machine and the
 files are meant to stay free of any secrets or personal data. This policy covers both.
 
@@ -20,7 +20,7 @@ out. You'll get a best-effort response — this is a personal project maintained
 
 - **Leaked secrets or personal data** — a committed token, credential, private key, or a
   machine-specific path (`/Users/<name>/...`) that slipped past sanitization.
-- **Unsafe script behavior** — anything in [`install/`](install/) or `shell/` that could destroy
+- **Unsafe script behavior** — anything in [`install/`](install/) that could destroy
   data, execute untrusted input, or modify files outside its intended scope.
 - **Misleading guidance** — a documented setting or command that meaningfully weakens the security
   of a machine that applies it.
@@ -38,5 +38,5 @@ backports; fixes land on `main`.
 
 ## Before you run anything
 
-These scripts are meant to be read before they are run. Review [`install/`](install/) scripts and any
-shell config, and confirm they match your expectations, before executing them on your machine.
+These scripts are meant to be read before they are run. Review [`install/`](install/) scripts and
+confirm they match your expectations, before executing them on your machine.

@@ -2,6 +2,10 @@
 
 Rules and requirements for Claude when building a loop for a project or process.
 
+> **Based on** the article *Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt
+> Your Agents — A Field Study of Designing Loops That Run Themselves*. These rules adapt its principles
+> to this repository; the wording and structure are my own.
+
 ---
 
 ## 0. What we are building

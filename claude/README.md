@@ -9,7 +9,7 @@ The Claude Code layer of OFFICINA: a deliberately selected set of Claude-specifi
 | Folder | What it holds | Status |
 |--------|---------------|--------|
 | [`agents/`](agents/) | Subagents — specialized agents for delegated tasks | 🚧 Growing |
-| [`settings/`](settings/) | Sanitized global config — `CLAUDE.md` examples, `settings.json`, status line | 🚧 Growing |
+| [`settings/`](settings/) | Global config — `CLAUDE.md` examples, `settings.json`, status line | 🚧 Growing |
 
 ## Agents
 
@@ -18,7 +18,7 @@ per-agent notes.
 
 | Agent | Model | What it does |
 |-------|-------|--------------|
-| [`ai-dev`](agents/ai-dev.md) | `opus` | Agentic-systems architect: designs, builds, and ships production AI agents across the full stack — orchestration, tools, RAG, memory, inference, runtime, evals/observability, governance — with cost, latency, and security treated as first-class. Blunt, trade-off-driven, evals-before-deploy. |
+| [`ai-dev`](agents/ai-dev.md) | `inherit` | Agentic-systems architect: designs, builds, and ships production AI agents across the full stack — orchestration, tools, RAG, memory, inference, runtime, evals/observability, governance — with cost, latency, and security treated as first-class. Blunt, trade-off-driven, evals-before-deploy. |
 
 Each agent is a single Markdown file with YAML frontmatter (`name`, `description`, `model`). Drop it
 into `~/.claude/agents/` (or a project's `.claude/agents/`) to make it available.

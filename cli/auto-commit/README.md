@@ -67,5 +67,5 @@ ln -s "$PWD/auto-commit" ~/.local/bin/auto-commit
 ## Tests
 
 ```
-uv run --with pytest pytest test_auto_commit.py -q
+uv run --with pytest pytest -q
 ```

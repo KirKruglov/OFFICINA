@@ -1,3 +1,11 @@
+<p align="center">
+  <strong>English</strong> ·
+  <a href="README.de.md">Deutsch</a> ·
+  <a href="README.es.md">Español</a> ·
+  <a href="README.fr.md">Français</a> ·
+  <a href="README.ru.md">Русский</a>
+</p>
+
 <h1 align="center">OFFICINA</h1>
 
 <p align="center">
@@ -6,53 +14,67 @@
 
 <p align="center">
   <img alt="Platform: macOS" src="https://img.shields.io/badge/platform-macOS-000000?logo=apple&logoColor=white">
-  <img alt="Focus: Claude Code" src="https://img.shields.io/badge/focus-Claude%20Code-da7756">
-  <img alt="Status: work in progress" src="https://img.shields.io/badge/status-work%20in%20progress-f5a623">
+  <img alt="Core: Claude Code" src="https://img.shields.io/badge/core-Claude%20Code-da7756">
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green">
+  <a href="https://github.com/KirKruglov/OFFICINA/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/KirKruglov/OFFICINA?logo=github&label=last%20commit"></a>
 </p>
 
 <p align="center">
-  <strong>A developer's workshop for building with Claude Code</strong> — skills, subagents, CLI tools,
-  and a working <strong>methodology</strong>, plus curated VS Code and shell dotfiles for macOS.
+  <strong>Method and tools for systematic work with an AI development assistant.</strong> Skills,
+  subagents, CLI, and methodology — assembled and battle-tested on real projects.
 </p>
 
 ---
 
-> [!NOTE]
-> **Work in progress.** The structure is laid out; sections are filled by deliberate curation —
-> not bulk export — and grow as new tools, skills, and rules are added.
-
 ## Why OFFICINA
 
-Most public **dotfiles** and **setup** repositories are configuration dumps — a snapshot of *which
-toggles are flipped*. OFFICINA leads with **methodology**: *how to actually work* with Claude Code and
-your tooling. Configuration lives here too, but it orbits the method — not the other way around.
+OFFICINA is a workshop for working with AI tools in product development. At its core is the
+**method**: how to structure work with an AI assistant so it stays predictable and reproducible.
+Around it — skills, subagents, CLI, and configs, ready to reuse.
 
 - **Method first.** Reusable rules and guides — writing style, CLI authoring, skill & subagent
-  authoring, loop engineering — kept readable on their own.
-- **Portable skills, Claude Code core.** Curated skills that run in Claude Code and compatible
-  harnesses, plus Claude-specific subagents and settings — selected on purpose rather than mirrored
-  wholesale.
-- **Environment around it.** VS Code and shell as applied sections that support the core, not the
-  headline.
-- **macOS, one command.** Portable setup: bring a fresh machine up to the same environment with a
-  single install script.
+  authoring, loop engineering — each readable on its own.
+- **Portable skills, Claude Code at the core.** Skills aren't tied to one tool — they run in Claude
+  Code and compatible environments. Subagents and settings are tuned for Claude Code. Both are
+  hand-picked rather than dumped wholesale.
+- **Environment around the core.** VS Code as an applied section that supports the core rather than
+  being the headline.
+
+## Who it's for
+
+- **You work with an AI assistant and want a system** — a method, not one-off prompts.
+- **You write your own skills, subagents, CLI** — take battle-tested patterns and guides.
+- **You set up your working environment** for AI development on macOS.
+
+If you're after a plug-and-play, install-and-forget distribution — this isn't it: OFFICINA is about
+method and deliberate selection, not a ready-made turnkey build.
 
 ## What's inside
 
-| Section | What it holds | Status |
-|---|---|---|
-| [`skills/`](skills/) | Portable skills — reusable modes and procedures (Claude Code & compatible harnesses) | 🚧 Growing |
-| [`claude/`](claude/) | Claude Code layer — subagents and settings | 🚧 Growing |
-| [`methodology/`](methodology/) | Rules and guides — *how to work* (the main differentiator) | 🚧 In progress |
-| [`cli/`](cli/) | Personal CLI tools and shared libraries | 🚧 In progress |
-| [`vscode/`](vscode/) | VS Code settings, keybindings, curated extensions | ✅ Ready |
-| [`shell/`](shell/) | zsh, aliases, git config, fonts | 🚧 In progress |
-| [`install/`](install/) | Install and layout scripts | 🚧 `vscode.sh` ready |
+| Section | What it holds |
+|---|---|
+| [`skills/`](skills/) | Portable skills — reusable modes and procedures (Claude Code and compatible environments) |
+| [`claude/`](claude/) | Claude Code layer — subagents and settings |
+| [`methodology/`](methodology/) | Rules and guides — *how to work* |
+| [`cli/`](cli/) | Personal CLI tools and shared libraries |
+| [`vscode/`](vscode/) | VS Code settings, keybindings, curated extensions |
+| [`install/`](install/) | Install and layout scripts |
+
+## How the method works
+
+The starting point is one question — what to solve the task with:
+
+- A deterministic action, no model needed — **CLI**
+- Need to read the context and decide by situation — **skill**
+- An isolated subtask or a persona role — **subagent**
+- A recurring cycle on a schedule — **loop**
+
+Then comes the matching guide in [`methodology/`](methodology/): structure, conventions, a pre-deploy
+checklist. The method is shared; the artifact carries over between projects.
 
 ## Quick start
 
-Requires **macOS**. Clone the repo and explore the section that fits your need — each ships its own
+Requires **macOS**. Clone the repo and open the section that fits your need — each ships its own
 README and, where relevant, a one-command installer under [`install/`](install/):
 
 ```bash
@@ -66,24 +88,24 @@ The first ready installer sets up the VS Code environment:
 ./install/vscode.sh   # settings, keybindings, MesloLGS Nerd Font, curated extensions
 ```
 
-More installers and sections land as the repository grows — see the [section map](#whats-inside)
-for what's available now.
+## Philosophy
+
+- **The right tool for the task.** Deterministic work goes into a script, context-driven decisions to
+  the model. An extra model in the loop adds cost and uncertainty.
+- **Reliability rests on constraints.** Boundaries, budgets, and checks hold the system together. An
+  autonomous loop needs something able to say "no".
+- **Knowledge lives in the artifact.** A guide, skill, or subagent gets reused; what's worked out once
+  isn't worked out again every time.
+- **Hand-picked.** What lands in the repo is proven in practice and deliberately chosen.
 
 ## Contributing
 
-Issues, questions, and small fixes are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). OFFICINA is a
-curated showcase exported from a private source, so larger changes are best raised as an issue first.
+Issues, questions, and small fixes are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). OFFICINA is
+an open project.
+
+Useful? Star it — that's how the next developer finds the project. Fork it, take what fits, and adapt
+it to your own setup.
 
 ## License
 
 Released under the [MIT License](LICENSE) — © 2026 Kir Kruglov. Free to use, modify, and distribute.
-
----
-
-<sub>
-<strong>Keywords:</strong> Claude Code, Claude Code skills, subagents, AI coding workflow, developer
-methodology, dotfiles, VS Code settings, zsh config, macOS developer setup, CLI tools.<br>
-<strong>Topics:</strong> <code>claude-code</code> · <code>claude-code-skills</code> ·
-<code>subagents</code> · <code>dotfiles</code> · <code>vscode</code> · <code>macos</code> ·
-<code>developer-tools</code> · <code>methodology</code>
-</sub>

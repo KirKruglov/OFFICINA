@@ -57,8 +57,8 @@ them only if that matches yours.
 
 ## Status line
 
-`statusLine.command` points at `~/.claude/statusline-command.sh` (the sanitized form of the original
-absolute path — drop the script into `~/.claude/` for it to resolve). It requires
+`statusLine.command` points at `~/.claude/statusline-command.sh` (a `~`-relative path — drop the
+script into `~/.claude/` for it to resolve). It requires
 [`jq`](https://jqlang.github.io/jq/), and the branch glyph needs a
 [Nerd Font](https://www.nerdfonts.com/). What it looks like in the terminal:
 
