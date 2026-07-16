@@ -1,0 +1,15 @@
+{
+  "name": { "ru": "Инструмент командной строки", "en": "Command-line tool" },
+  "order": 1,
+  "slots": [
+    {
+      "dir": ".",
+      "default_lang": "go",
+      "langs": {
+        "go": ["go", "mod", "init", "{{.Name}}"],
+        "python": ["uv", "init", "--app", "--description", "{{.Description}}"]
+      },
+      "files": { "go": ["cli-go", "go"], "python": ["python"] }
+    }
+  ]
+}

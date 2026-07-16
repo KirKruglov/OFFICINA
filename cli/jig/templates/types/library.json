@@ -1,0 +1,15 @@
+{
+  "name": { "ru": "Библиотека", "en": "Library" },
+  "order": 3,
+  "slots": [
+    {
+      "dir": ".",
+      "default_lang": "go",
+      "langs": {
+        "go": ["go", "mod", "init", "{{.Name}}"],
+        "python": ["uv", "init", "--lib", "--description", "{{.Description}}"]
+      },
+      "files": { "go": ["library-go", "go"], "python": ["python"] }
+    }
+  ]
+}

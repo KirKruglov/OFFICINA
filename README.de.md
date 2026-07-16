@@ -68,7 +68,7 @@ Zusammenstellung.
 
 Ausgangspunkt ist eine Frage — womit die Aufgabe zu lösen ist:
 
-- Eine deterministische Aktion, kein Modell nötig — **CLI**
+- Eine deterministische Aktion, kein Modell nötig — **CLI** (z. B. richtet [`jig`](cli/jig/) ein neues Repository mit einem Befehl ein)
 - Kontext verstehen und je nach Situation entscheiden — **Skill**
 - Eine isolierte Teilaufgabe oder eine Persona-Rolle — **Subagent**
 - Ein wiederkehrender Zyklus nach Zeitplan — **Loop**
@@ -76,6 +76,9 @@ Ausgangspunkt ist eine Frage — womit die Aufgabe zu lösen ist:
 Danach folgt der passende Leitfaden in [`methodology/`](methodology/): Struktur, Konventionen, eine
 Checkliste vor dem Deploy. Die Methode ist gemeinsam; das Artefakt lässt sich zwischen Projekten
 übertragen.
+
+[`jig`](cli/jig/) ist die Methode als Werkzeug: mit einem Befehl legt es genau die Dokumentstruktur und
+Claude-Einrichtung an, die die Leitfäden in [`methodology/`](methodology/) beschreiben.
 
 ## Schnellstart
 

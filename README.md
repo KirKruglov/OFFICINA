@@ -64,13 +64,16 @@ method and deliberate selection, not a ready-made turnkey build.
 
 The starting point is one question — what to solve the task with:
 
-- A deterministic action, no model needed — **CLI**
+- A deterministic action, no model needed — **CLI** (e.g. [`jig`](cli/jig/) scaffolds a new repository in one command)
 - Need to read the context and decide by situation — **skill**
 - An isolated subtask or a persona role — **subagent**
 - A recurring cycle on a schedule — **loop**
 
 Then comes the matching guide in [`methodology/`](methodology/): structure, conventions, a pre-deploy
 checklist. The method is shared; the artifact carries over between projects.
+
+[`jig`](cli/jig/) is the method turned into a tool: in one command it scaffolds the very doc structure
+and Claude setup that the guides in [`methodology/`](methodology/) describe.
 
 ## Quick start
 

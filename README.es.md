@@ -66,7 +66,7 @@ selección deliberada, no de un paquete llave en mano listo para usar.
 
 El punto de partida es una pregunta — con qué resolver la tarea:
 
-- Una acción determinista, sin modelo — **CLI**
+- Una acción determinista, sin modelo — **CLI** (p. ej. [`jig`](cli/jig/) despliega un nuevo repositorio con un solo comando)
 - Hay que entender el contexto y decidir según la situación — **skill**
 - Una subtarea aislada o un rol-persona — **subagente**
 - Un ciclo recurrente por horario — **loop**
@@ -74,6 +74,9 @@ El punto de partida es una pregunta — con qué resolver la tarea:
 Después viene la guía correspondiente en [`methodology/`](methodology/): estructura, convenciones, una
 lista de verificación antes del despliegue. El método es común; el artefacto se traslada entre
 proyectos.
+
+[`jig`](cli/jig/) es el método convertido en herramienta: con un solo comando despliega la misma
+estructura de documentos y configuración de Claude que describen las guías en [`methodology/`](methodology/).
 
 ## Inicio rápido
 

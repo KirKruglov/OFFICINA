@@ -25,11 +25,14 @@ Decision tree:
   default for wrappers and delivery.
 - **Python** — there is logic, branching, work with JSON/HTTP/data, tests are needed. The default for
   API integrations and automation.
+- **Go** — when the tool needs a single static binary, embeds assets (`//go:embed`), or must not
+  depend on a runtime interpreter on the target machine. Default for compiled CLI tools (e.g.
+  `cli/jig`). Prefer the standard library; pin the Go version in `go.mod`.
 - **Node** — off by default. Allowed only when directly reusing code from `plugin-dev`.
 
 The bash → Python boundary: once arrays or dictionaries appear, command-output parsing is needed, or
-there are more than three branches — move to Python. Three runtimes for personal tooling is one too
-many.
+there are more than three branches — move to Python. Prefer not to multiply runtimes without cause:
+bash and Python cover most personal tooling; add Go only when a compiled binary is the right shape.
 
 **Target Python version — 3.14** (the current stable branch, released 2025-10-07; the default
 `python3`, managed by `uv`, with shims in `~/.local/bin`). 3.13 is an acceptable conservative
@@ -42,10 +45,10 @@ Verify with `python3 --version` — the machine's version is authoritative.
 Model — colocation: a tool lives entirely in its own folder.
 
 - Each tool is a separate folder `cli/<tool-name>/`, even a single-file one.
-- Entry point — `cli/<tool-name>/<tool-name>` (executable, kebab-case, no extension) or
-  `cli/<tool-name>/main.py` for Python.
-- A tool's private logic — inside its folder: `cli/<tool-name>/lib/` or modules next to the entry
-  point.
+- Entry point — `cli/<tool-name>/<tool-name>` (executable, kebab-case, no extension);
+  `cli/<tool-name>/main.py` for Python; `cli/<tool-name>/main.go` for Go.
+- A tool's private logic — inside its folder: `cli/<tool-name>/lib/`, Go `internal/`, or modules
+  next to the entry point.
 - The root `/lib` — shared code only, with **two or more** consumers.
 - Names: folder and entry point — `kebab-case`; Python modules — `snake_case`.
 
@@ -131,12 +134,21 @@ is written here.
 
 ## 8. Delivery
 
-- Run directly from the repository. The entry-point file is executable (`chmod +x`).
-- Delivery — via PATH (symlink or adding the folder to PATH) or an alias. No install and no build.
+Two delivery shapes — pick by language class:
+
+- **Script tools** (bash, Python): run directly from the repository. The entry-point file is
+  executable (`chmod +x`). Put the command on PATH via a symlink or an alias. No install and no
+  build step.
+- **Compiled tools** (Go): build a binary onto PATH, e.g.
+  `(cd cli/<tool-name> && go build -o "$HOME/.local/bin/<tool-name>" .)`. After `git pull`, rebuild
+  with the same command so the binary matches the source.
+
+Common rules for both:
+
 - A tool does not depend on the current working directory: paths are absolute or relative to the
-  script's location.
-- Self-sufficiency: after `git pull` the tool works with no extra steps beyond the declared secrets or
-  `venv`.
+  script's location (or the binary's package layout for Go).
+- Self-sufficiency: after `git pull`, a script tool works with no extra steps beyond the declared
+  secrets or `venv`; a compiled tool needs only the rebuild above (plus declared secrets if any).
 
 ## 9. Testing
 

@@ -1,0 +1,9 @@
+{
+  "full_only": [
+    "docs/product/strategy",
+    "docs/product/release-0.1.0",
+    "docs/planning/release-plan",
+    "docs/marketing",
+    "docs/analytics"
+  ]
+}

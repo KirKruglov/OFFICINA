@@ -1,0 +1,31 @@
+# CLAUDE.md
+
+{{.Description}}
+
+## About the project
+Project {{.Name}}. Code lives at the repository root, documentation in docs/.
+
+## Repository map
+- docs/product/   — product description, architecture, ADRs
+- docs/planning/  — roadmaps and backlog
+- docs/marketing/ — promotion (in full projects)
+- docs/analytics/ — analytics (in full projects)
+- docs/design/    — design system (in web projects)
+- docs/archive/   — housekeeping archives
+Details and rules for each folder live in its CLAUDE.md.
+
+## Codebase
+Code lives at the repository root. The language initializer (go mod / uv / npm)
+owns the layout and dependencies; jig does not impose one.{{range .Slots}}
+- {{.Dir}}/ — {{.Lang}}{{end}}
+- Go: build into bin/ (the directory is in .gitignore), e.g.
+  go build -o bin/{{.Name}} . — not a bare go build in the module root.
+
+## Working rules
+- Show the plan before edits; proceed after confirmation.
+- The simple solution for the task at hand, no needless abstraction.
+- Product documents go in docs/, never in the code.
+- Git: commit messages in English; branches feature/, fix/, docs/.
+
+## Style
+Writing-style guide: @.claude/rules/writing-style.md

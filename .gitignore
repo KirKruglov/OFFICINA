@@ -17,10 +17,12 @@ __pycache__/
 .claude/
 
 # Internal instructions for Claude Code (contain private paths/names) — do not publish
-CLAUDE.md
+# Anchored to repo root so nested CLAUDE.md files (e.g. jig template docs) are still published
+/CLAUDE.md
 
 # Internal project notes and decisions — source-side, not part of the public showcase
-docs/
+# Anchored to repo root so nested docs/ (e.g. jig template tree) are still published
+/docs/
 
 # Secrets and local environment — do not publish
 .env

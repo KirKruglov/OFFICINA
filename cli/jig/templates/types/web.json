@@ -1,0 +1,24 @@
+{
+  "name": { "ru": "Веб-приложение", "en": "Web application" },
+  "order": 2,
+  "docs": "design",
+  "slots": [
+    {
+      "dir": "backend",
+      "default_lang": "python",
+      "langs": {
+        "python": ["uv", "init", "--app", "--description", "{{.Description}}"],
+        "go": ["go", "mod", "init", "{{.Name}}"]
+      },
+      "files": { "go": ["go"], "python": ["python"] }
+    },
+    {
+      "dir": "frontend",
+      "default_lang": "ts",
+      "langs": {
+        "ts": ["npm", "create", "vite@latest", ".", "--", "--template", "vanilla-ts"],
+        "js": ["npm", "create", "vite@latest", ".", "--", "--template", "vanilla"]
+      }
+    }
+  ]
+}

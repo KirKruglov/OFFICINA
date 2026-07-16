@@ -66,13 +66,16 @@ parle de méthode et de choix délibéré, pas d'un assemblage clé en main prê
 
 Le point de départ est une question — avec quoi résoudre la tâche :
 
-- Une action déterministe, sans modèle — **CLI**
+- Une action déterministe, sans modèle — **CLI** (par ex. [`jig`](cli/jig/) déploie un nouveau dépôt en une seule commande)
 - Comprendre le contexte et décider selon la situation — **skill**
 - Une sous-tâche isolée ou un rôle-persona — **sous-agent**
 - Un cycle récurrent planifié — **loop**
 
 Vient ensuite le guide correspondant dans [`methodology/`](methodology/) : structure, conventions, une
 checklist avant le déploiement. La méthode est commune ; l'artefact se transpose d'un projet à l'autre.
+
+[`jig`](cli/jig/) est la méthode devenue outil : en une seule commande, il déploie la structure de
+documents et la configuration Claude que décrivent les guides dans [`methodology/`](methodology/).
 
 ## Démarrage rapide
 
