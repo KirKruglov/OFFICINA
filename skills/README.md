@@ -3,8 +3,9 @@
 Reusable **agent skills**: self-contained modes and procedures an AI coding agent invokes mid-session.
 Each one is a folder with a `SKILL.md` — plain Markdown plus YAML frontmatter — so it isn't tied to
 any single runtime. These run in **Claude Code** and in any harness that reads the `SKILL.md` format.
-Four skills ship here: Conventional Commits, safe branch merging, a read-only discussion mode, and
-release finalization. Part of the [OFFICINA](../) repository.
+Five skills ship here: Conventional Commits, safe branch merging, a read-only discussion mode,
+release finalization, and a guided setup walkthrough for external services. Part of the
+[OFFICINA](../) repository.
 
 ## What a skill is
 
@@ -26,6 +27,7 @@ no decisions in it belongs in a script; a whole role belongs in a subagent. See
 | [`discuss`](discuss/SKILL.md) | `/discuss` (manual only) | Read-only thinking-partner mode for Q&A, ideation, and design debate |
 | [`merging-branches`](merging-branches/SKILL.md) | auto — before merge/rebase | Safe branch integration with pre-merge checks and protected-branch gates |
 | [`release-finalize`](release-finalize/SKILL.md) | `/release-finalize [version]` | Changelog, README sync, pre-publish scan, annotated git tag |
+| [`setup-wizard`](setup-wizard/SKILL.md) | `/setup-wizard <service-url>` | Step-by-step walkthrough of a setup task on an external service, built from its official docs |
 
 ### `committing-changes` — Conventional Commits, enforced
 
@@ -81,6 +83,24 @@ It's universal by default — release artifacts are auto-detected, and an option
 applied, then a straight run to the tag. It never merges, pushes, or deploys: the last thing it does
 is print the commands you'd run next.
 
+### `setup-wizard` — a guided walkthrough, evidence at every step
+
+Setting up an unfamiliar service goes wrong in two ways an agent makes worse: it fills in the steps
+from memory when the documentation is thin, and it takes "seems to have worked" for a result. This
+skill closes both. It starts by pinning down what the user actually wants — install from scratch,
+connect an existing account, configure one feature, fix something broken, upgrade or migrate — and
+holds at a gate until the task statement is confirmed as a single line. Only then does it read the
+official documentation for that task: the service's own domain or its official repository, with
+blogs and forums barred as the basis of the route.
+
+The route is built once and shown as a map with a step count. From there the skill dictates one step
+per reply — action, expected result, evidence to send back — and a step closes only when the
+evidence matches: exact command output, the full error text, a screenshot. Words leave the step
+open and the number does not advance. Errors are triaged inside the current step with a ceiling of
+3 attempts, after which the skill stops and puts 2–3 options on the table instead of grinding on.
+The user performs every action: `Bash`, `Edit`, and `Write` are removed from the pool via
+`disallowed-tools`, so "let me do it for you" isn't available even as a suggestion.
+
 ### How these skills chain
 
 The git skills call each other rather than duplicating logic. On a squash merge, `merging-branches`
@@ -116,6 +136,7 @@ Everything below the frontmatter is the procedure the agent follows.
 | `disable-model-invocation` | no | `true` makes the skill manual-only: it fires on `/name` and never self-activates |
 | `argument-hint` | no | Argument placeholder shown at the command prompt, e.g. `"[version]"` |
 | `allowed-tools` | no | Restricts the tool pool while the skill runs, e.g. `Bash(git:*)` |
+| `disallowed-tools` | no | Removes tools from the pool while the skill runs, e.g. `Bash` in `setup-wizard` |
 
 The body is the procedure itself: numbered steps, the exact commands to run, the conditions that
 stop the run, and the wording of anything the agent prints. Anything a skill needs beyond that —
@@ -155,10 +176,12 @@ Two invocation modes, and the choice is a design decision rather than a preferen
 them on its own. This is right when the skill guards an operation that must never happen unguarded: a
 commit, a merge. If it only ran when you remembered to ask for it, it wouldn't be a guardrail.
 
-**Manual-only** skills — `discuss`, `release-finalize` — set `disable-model-invocation: true` and
-fire only on their slash command. This is right when the skill changes how the whole session behaves,
-or performs an irreversible act. A discussion mode the agent could enter by itself would be a mode
-you never chose; a release that tagged itself would be a release nobody approved.
+**Manual-only** skills — `discuss`, `release-finalize`, `setup-wizard` — set
+`disable-model-invocation: true` and fire only on their slash command. This is right when the skill
+changes how the whole session behaves, or performs an irreversible act. A discussion mode the agent
+could enter by itself would be a mode you never chose; a release that tagged itself would be a
+release nobody approved; a walkthrough that started on its own would take the session over with a
+task nobody named.
 
 If an auto-invoked skill isn't triggering when you expect it to, the `description` is almost always
 the reason. It's the only part of the file that's always in context — write it as the conditions
@@ -205,10 +228,12 @@ the file appeared.
 
 ### Can a skill be restricted to certain tools?
 
-Yes — `allowed-tools` in the frontmatter narrows the tool pool for as long as the skill runs.
-`release-finalize` uses `Bash(git:*)` to permit git and nothing else. Note that `discuss` takes the
-opposite approach: its read-only rule is behavioral, enforced by the procedure rather than by the
-tool pool, because the mode still needs unrestricted reading and search.
+Yes, in two ways. `allowed-tools` narrows what the skill may reach for as long as it runs —
+`release-finalize` uses `Bash(git:*)` to permit git and nothing else. `disallowed-tools` goes the
+other way and takes tools out of the pool: `setup-wizard` drops `Bash`, `Edit`, `Write`, and
+`NotebookEdit`, which is what turns "the user performs every action" into a guarantee rather than a
+promise. `discuss` shows the third option: its read-only rule is behavioral, enforced by the
+procedure rather than by the tool pool, because the mode still needs unrestricted reading and search.
 
 ### What's the difference between a skill and a slash command?
 
