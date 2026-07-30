@@ -59,6 +59,36 @@ The `model` field is deliberately unset — Claude Code and Cursor default to `i
 adopts the session model. Per-harness recommendations are in
 [`agents/README.md`](agents/README.md#model-per-harness).
 
+### `architect` and `arch-critic-runner` — a session owner and its blind critic
+
+| Agent | Model | What it does |
+|-------|-------|--------------|
+| [`architect`](agents/architect.md) | `inherit` | Runs a whole session as a skeptical-minimalist software architect |
+| [`arch-critic-runner`](agents/arch-critic-runner.md) | `inherit` | Reviews one decision package with no access to the reasoning behind it |
+
+`architect` inverts the usual pattern: you start a session with `claude --agent architect` instead
+of dispatching it into one. Its contract is a short list of refusals — no version stated from
+memory, no dependency added without a named need, no decision left in the chat log instead of a
+repository file — and a routing table that points each situation at the matching
+[`arch-*` skill](../skills/arch/).
+
+`arch-critic-runner` is the opposite shape: a subagent that exists purely to be delegated to. What
+makes it work is subtraction. It receives the decision package and nothing else — no candidate
+list rationale, no discussion history — because a reviewer who has read the justification tends to
+ratify it. Its `tools` are `Read, Grep, Glob`, and the `skills` field preloads the `arch-critic`
+procedure into its context at start.
+
+Subtraction that thorough needs a check on the other end. A subagent whose `skills:` preload did not
+resolve — the usual cause being that the skill was never installed — still answers, fluently and
+plausibly, from no procedure at all. So the skills that dispatch it verify the file exists before the
+run starts and verify the shape of the report when it comes back: the heading, the verdict line, the
+table of four axes. Anything else counts as no review having happened, which is recorded as such.
+Silence would have been safer than an improvised verdict, and a check on the format is what tells the
+two apart.
+
+Both are documented with the system they serve in
+[`skills/arch/`](../skills/arch/README.md).
+
 ### Portability beyond Claude Code
 
 The persona body is harness-neutral; only the wrapper differs. The same subagent runs on four targets:

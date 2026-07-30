@@ -2,10 +2,12 @@
 
 Reusable **agent skills**: self-contained modes and procedures an AI coding agent invokes mid-session.
 Each one is a folder with a `SKILL.md` — plain Markdown plus YAML frontmatter — so it isn't tied to
-any single runtime. These run in **Claude Code** and in any harness that reads the `SKILL.md` format.
-Five skills ship here: Conventional Commits, safe branch merging, a read-only discussion mode,
-release finalization, and a guided setup walkthrough for external services. Part of the
-[OFFICINA](../) repository.
+any single runtime. The five standalone skills run in **Claude Code** and in any harness that reads
+the `SKILL.md` format; the [`arch/`](arch/) system is the exception — it is **Claude Code only**, and
+the reason is spelled out where it installs. Eleven skills ship here: Conventional Commits, safe
+branch merging, a read-only discussion mode, release finalization, a guided setup walkthrough for
+external services, and a six-skill system for recording and auditing a project's architecture. Part
+of the [OFFICINA](../) repository.
 
 ## What a skill is
 
@@ -28,6 +30,7 @@ no decisions in it belongs in a script; a whole role belongs in a subagent. See
 | [`merging-branches`](merging-branches/SKILL.md) | auto — before merge/rebase | Safe branch integration with pre-merge checks and protected-branch gates |
 | [`release-finalize`](release-finalize/SKILL.md) | `/release-finalize [version]` | Changelog, README sync, pre-publish scan, annotated git tag |
 | [`setup-wizard`](setup-wizard/SKILL.md) | `/setup-wizard <service-url>` | Step-by-step walkthrough of a setup task on an external service, built from its official docs |
+| [`arch/`](arch/) — 6 skills | `/arch-new`, `/arch-change`, `/arch-review`, `/arch-health` | A system that records a project's stack, versions, and decisions in repository files and audits them |
 
 ### `committing-changes` — Conventional Commits, enforced
 
@@ -101,6 +104,40 @@ open and the number does not advance. Errors are triaged inside the current step
 The user performs every action: `Bash`, `Edit`, and `Write` are removed from the pool via
 `disallowed-tools`, so "let me do it for you" isn't available even as a suggestion.
 
+### [`arch/`](arch/) — architecture as files in the repository
+
+The one group here that is a system rather than a set of independent procedures. Six skills share
+three artifacts in the target project — `architecture.md`, `tech-stack.md`, and an ADR journal —
+and pass work between each other: `arch-new` designs a greenfield stack, `arch-change` records a
+delta for one feature, `arch-critic` returns a verdict on a decision, `adr-write` writes the ADR,
+and `arch-review` and `arch-health` check the code and the documents back against what was
+recorded.
+
+Three rules give the group its shape. A version is never stated from memory: each one is fetched
+from a primary source and recorded with a date and a URL, and it expires after 90 days.
+Installability is proven by a single lock-only resolve of the whole manifest, with the lockfile
+hash kept as evidence — and when the ecosystem's resolver isn't on the machine, the run records
+installability as unproven rather than assuming it. And a structural rule exists only when it
+carries an executable read-only `check` command, so the auditing skills form no opinions of their
+own about the code.
+
+The manifest is worth a note of its own: `arch-new` writes it on a greenfield project and
+`arch-change` applies its confirmed delta to it, which makes it the one file outside
+`docs/architecture/` the group touches. It carries dependencies and their recorded versions and
+nothing else — the versions in the form the resolver reads, next to the same versions in the form a
+human reads.
+
+The group ships with four shared references — including the house stack and the registry of
+primary sources — that install to `~/.claude/arch/` rather than into the skills directory, and
+with two subagents in [`claude/`](../claude/agents/). Details, the flow diagram, and the two-step
+install are in [`arch/README.md`](arch/README.md).
+
+Two conditions come with it. The group is **Claude Code only** — `${CLAUDE_SKILL_DIR}` for the
+shared references, the `Task*` tools for the run plan, the `Agent` tool for the blind self-check, and
+a subagent that preloads a skill through its `skills:` field are all Claude Code mechanics, and no
+other harness resolves them. And the house stack ships filled in with one author's technologies:
+rewriting `house-stack.md` and `sources.md` is the first step of adoption, not a later refinement.
+
 ### How these skills chain
 
 The git skills call each other rather than duplicating logic. On a squash merge, `merging-branches`
@@ -108,6 +145,17 @@ hands off to `committing-changes` to produce the single commit — one message c
 scan, no second copy of either. `release-finalize` reuses the same pair: it delegates its commit
 phase to `committing-changes`, then points at `merging-branches` for the release-branch merge in its
 hand-off block.
+
+The architecture skills chain harder: `arch-new` and `arch-change` both delegate their self-check
+to the `arch-critic` skill through a subagent, and both delegate every ADR they produce to
+`adr-write`. That one is marked `user-invocable: false` — it never appears in the `/` menu, because
+an ADR is only ever written after a procedure that had a confirmation gate.
+
+A chain that tight has to say what happens when a link is missing, since a partial copy is the
+likeliest way to install it. Both writing skills check for the critic subagent before the first web
+fetch and validate the shape of the verdict it returns; a link that is absent, or one that answers
+without its procedure loaded, turns into a gate and then a named skip recorded in the ADR — never a
+step that quietly did not happen.
 
 ## Anatomy of a `SKILL.md`
 
@@ -134,9 +182,10 @@ Everything below the frontmatter is the procedure the agent follows.
 | `name` | yes | The skill's identifier; matches the folder name and the `/name` command |
 | `description` | yes | The only text always in context — it decides whether the skill gets loaded at all. Write it as trigger conditions, not as a summary |
 | `disable-model-invocation` | no | `true` makes the skill manual-only: it fires on `/name` and never self-activates |
+| `user-invocable` | no | `false` hides the skill from the `/` menu — only another skill or the agent reaches it, as with `adr-write` |
 | `argument-hint` | no | Argument placeholder shown at the command prompt, e.g. `"[version]"` |
-| `allowed-tools` | no | Restricts the tool pool while the skill runs, e.g. `Bash(git:*)` |
-| `disallowed-tools` | no | Removes tools from the pool while the skill runs, e.g. `Bash` in `setup-wizard` |
+| `allowed-tools` | no | Pre-approves tools for the turn that invokes the skill, so they run without a permission prompt, e.g. `Bash(git:*)`. It does **not** restrict the pool — everything else stays callable under your usual permission settings |
+| `disallowed-tools` | no | Removes tools from the pool while the skill runs, e.g. `Bash` in `setup-wizard`. This is the field that actually takes something away |
 
 The body is the procedure itself: numbered steps, the exact commands to run, the conditions that
 stop the run, and the wording of anything the agent prints. Anything a skill needs beyond that —
@@ -152,6 +201,9 @@ Drop the skill's folder into your agent's skills directory:
 └── committing-changes/
     └── SKILL.md
 ```
+
+The `arch/` folder is a container, not a skill: what installs is each of the six folders inside it,
+plus the shared references at `~/.claude/arch/`. See [`arch/README.md`](arch/README.md#installing).
 
 - **Claude Code** — `~/.claude/skills/<name>/` makes it available everywhere; a project's
   `.claude/skills/<name>/` scopes it to that repository.
@@ -171,17 +223,23 @@ Restart the session, or start a new one, for the agent to pick up the new folder
 
 Two invocation modes, and the choice is a design decision rather than a preference.
 
-**Auto-invoked** skills — `committing-changes`, `merging-branches` — carry no
+**Auto-invoked** skills — `committing-changes`, `merging-branches`, `arch-critic` — carry no
 `disable-model-invocation` field. The agent matches the situation against the `description` and loads
 them on its own. This is right when the skill guards an operation that must never happen unguarded: a
 commit, a merge. If it only ran when you remembered to ask for it, it wouldn't be a guardrail.
+`arch-critic` qualifies for a second reason: it writes nothing, so the worst case of a spurious
+invocation is an unwanted verdict in chat.
 
-**Manual-only** skills — `discuss`, `release-finalize`, `setup-wizard` — set
-`disable-model-invocation: true` and fire only on their slash command. This is right when the skill
-changes how the whole session behaves, or performs an irreversible act. A discussion mode the agent
-could enter by itself would be a mode you never chose; a release that tagged itself would be a
-release nobody approved; a walkthrough that started on its own would take the session over with a
-task nobody named.
+**Manual-only** skills — `discuss`, `release-finalize`, `setup-wizard`, and the four `arch-*`
+commands — set `disable-model-invocation: true` and fire only on their slash command. This is right
+when the skill changes how the whole session behaves, or performs an irreversible act. A discussion
+mode the agent could enter by itself would be a mode you never chose; a release that tagged itself
+would be a release nobody approved; an `/arch-new` that started on its own would design a stack
+nobody asked for.
+
+`adr-write` is the third case: `user-invocable: false` instead of
+`disable-model-invocation: true`. It stays out of the `/` menu entirely and is reachable only from
+`arch-new` and `arch-change`, which is what keeps an ADR downstream of a confirmation gate.
 
 If an auto-invoked skill isn't triggering when you expect it to, the `description` is almost always
 the reason. It's the only part of the file that's always in context — write it as the conditions
@@ -244,10 +302,15 @@ in.
 
 ### Can I take one skill without adopting the rest of the repository?
 
-Yes. Each folder is self-contained: copy it into your skills directory and it works. The only
-coupling is between the git skills, which hand off to each other — `merging-branches` and
-`release-finalize` both delegate their commit phase to `committing-changes`, so take that one along
-if you use either.
+Yes for the five standalone skills. Each folder is self-contained: copy it into your skills
+directory and it works. The only coupling is between the git skills, which hand off to each other —
+`merging-branches` and `release-finalize` both delegate their commit phase to `committing-changes`,
+so take that one along if you use either.
+
+The `arch/` group is the exception, twice over. Its six skills share one artifact set and four
+runtime references, and four of them route decisions to `arch-critic` and `adr-write`, so a partial
+copy breaks at the first gate — take the group whole, or leave it. And it is the one group here that
+does not travel beyond Claude Code.
 
 ## Related
 
