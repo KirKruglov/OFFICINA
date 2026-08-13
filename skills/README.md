@@ -2,12 +2,12 @@
 
 Reusable **agent skills**: self-contained modes and procedures an AI coding agent invokes mid-session.
 Each one is a folder with a `SKILL.md` — plain Markdown plus YAML frontmatter — so it isn't tied to
-any single runtime. The five standalone skills run in **Claude Code** and in any harness that reads
+any single runtime. The six standalone skills run in **Claude Code** and in any harness that reads
 the `SKILL.md` format; the [`arch/`](arch/) system is the exception — it is **Claude Code only**, and
-the reason is spelled out where it installs. Eleven skills ship here: Conventional Commits, safe
-branch merging, a read-only discussion mode, release finalization, a guided setup walkthrough for
-external services, and a six-skill system for recording and auditing a project's architecture. Part
-of the [OFFICINA](../) repository.
+the reason is spelled out where it installs. Twelve skills ship here: Conventional Commits, safe
+branch merging, a read-only discussion mode, a session handoff brief, release finalization, a guided
+setup walkthrough for external services, and a six-skill system for recording and auditing a
+project's architecture. Part of the [OFFICINA](../) repository.
 
 ## What a skill is
 
@@ -27,6 +27,7 @@ no decisions in it belongs in a script; a whole role belongs in a subagent. See
 |-------|--------|--------------|
 | [`committing-changes`](committing-changes/SKILL.md) | auto — before any commit | Conventional Commits procedure with a secret scan and atomic-split proposal |
 | [`discuss`](discuss/SKILL.md) | `/discuss` (manual only) | Read-only thinking-partner mode for Q&A, ideation, and design debate |
+| [`handoff`](handoff/SKILL.md) | `/handoff` (manual only) | Session brief — decisions, in-progress work, open questions, files, next steps — for paste into a new session |
 | [`merging-branches`](merging-branches/SKILL.md) | auto — before merge/rebase | Safe branch integration with pre-merge checks and protected-branch gates |
 | [`release-finalize`](release-finalize/SKILL.md) | `/release-finalize [version]` | Changelog, README sync, pre-publish scan, annotated git tag |
 | [`setup-wizard`](setup-wizard/SKILL.md) | `/setup-wizard <service-url>` | Step-by-step walkthrough of a setup task on an external service, built from its official docs |
@@ -59,6 +60,20 @@ The mode is strictly **read-only**: no files created, edited, or deleted, no com
 effects, until you exit with `exit discussion` or `/discuss off`. Reading, searching, and web access
 stay open. Every reply carries the verbatim `💬 [discussion]` marker so the mode is never ambiguous.
 It's manual-only — `disable-model-invocation: true` keeps the agent from wandering into it on its own.
+
+### `handoff` — a paste-ready session brief
+
+A coding session ends with decisions, half-done work, and open questions that the next session will
+not see. This skill composes a single markdown block from the current conversation, the task list,
+and a load-time git snapshot: what is done, what is in progress, what is still open, which files
+were touched, and what to do next. The block is printed in chat, ready to paste as the first
+message of a new session. It writes no files.
+
+Invocation is manual only, via `/handoff` or `/handoff <topic>`. An optional topic filters the
+block to that line of work. After `/compact`, the skill reads the git snapshot and the task
+list. Empty sections stay `— none —`; a file list that
+is empty is omitted. It never reads Claude's private transcript, never copies secrets, and never
+continues the work it just summarized.
 
 ### `merging-branches` — pre-merge safety gates
 
@@ -230,12 +245,12 @@ commit, a merge. If it only ran when you remembered to ask for it, it wouldn't b
 `arch-critic` qualifies for a second reason: it writes nothing, so the worst case of a spurious
 invocation is an unwanted verdict in chat.
 
-**Manual-only** skills — `discuss`, `release-finalize`, `setup-wizard`, and the four `arch-*`
-commands — set `disable-model-invocation: true` and fire only on their slash command. This is right
-when the skill changes how the whole session behaves, or performs an irreversible act. A discussion
-mode the agent could enter by itself would be a mode you never chose; a release that tagged itself
-would be a release nobody approved; an `/arch-new` that started on its own would design a stack
-nobody asked for.
+**Manual-only** skills — `discuss`, `handoff`, `release-finalize`, `setup-wizard`, and the four
+`arch-*` commands — set `disable-model-invocation: true` and fire only on their slash command. This
+is right when the skill changes how the whole session behaves, or performs an irreversible act. A
+discussion mode the agent could enter by itself would be a mode you never chose; a session brief
+emitted unasked would burn a turn nobody requested; a release that tagged itself would be a release
+nobody approved; an `/arch-new` that started on its own would design a stack nobody asked for.
 
 `adr-write` is the third case: `user-invocable: false` instead of
 `disable-model-invocation: true`. It stays out of the `/` menu entirely and is reachable only from
@@ -266,9 +281,11 @@ required produces confident nonsense. The full reasoning and the authoring guide
 
 ### Do these skills work outside Claude Code?
 
-Yes. A `SKILL.md` is Markdown with YAML frontmatter and carries no Claude Code-specific syntax in its
-body. Any harness that reads the format can run them; only the installation path differs. The tool
-names referenced in `allowed-tools` are the one place a harness may need a translation.
+Yes. A `SKILL.md` is Markdown with YAML frontmatter. Most standalone skills carry no Claude
+Code-specific syntax in the body. `handoff` uses load-time `` !` `` substitutions and `TaskList`
+when the harness provides them; if they do not resolve, the procedure continues without that
+source. Any harness that reads the format can run them; only the installation path differs. The
+tool names referenced in `allowed-tools` are the one place a harness may need a translation.
 
 ### Where do Claude Code skills live?
 
@@ -302,7 +319,7 @@ in.
 
 ### Can I take one skill without adopting the rest of the repository?
 
-Yes for the five standalone skills. Each folder is self-contained: copy it into your skills
+Yes for the six standalone skills. Each folder is self-contained: copy it into your skills
 directory and it works. The only coupling is between the git skills, which hand off to each other —
 `merging-branches` and `release-finalize` both delegate their commit phase to `committing-changes`,
 so take that one along if you use either.
